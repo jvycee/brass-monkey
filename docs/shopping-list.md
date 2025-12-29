@@ -46,7 +46,28 @@
 
 ---
 
-## Phase 2: Entertainment & Expansion (~$60-80)
+## Phase 2: Climate Control (~$50-70)
+
+### Temperature Monitoring
+- [ ] **Aqara Temperature/Humidity Sensor** (~$12 each, get 2-3)
+  - One for bedroom
+  - One for living room
+  - Battery powered (2+ year life)
+  - Zigbee connectivity
+  - Amazon: "Aqara Temperature Humidity Sensor"
+
+### Fan Control
+- [ ] **Kasa Smart Plug EP25** (~$12 each, get 2)
+  - One plug per room fan
+  - Energy monitoring
+  - Automatic temperature-based control
+  - Amazon: "Kasa Smart Plug EP25"
+
+**Phase 2 Total:** ~$48-60
+
+---
+
+## Phase 3: Entertainment & Expansion (~$60-80)
 
 ### Power Management
 - [ ] **Kasa Smart Power Strip KP303** (~$30)
@@ -61,7 +82,7 @@
   - Same local control
   - Amazon: "Kasa Smart Plug Mini EP10"
 
-**Phase 2 Total:** ~$50-60
+**Phase 3 Total:** ~$50-60
 
 ---
 
@@ -108,6 +129,7 @@ Copy/paste these:
 ```
 Levoit Core 300S
 Aqara Door Window Sensor
+Aqara Temperature Humidity Sensor
 Kasa Smart Bulb KL125
 Kasa Smart Plug EP25
 NFC Tags NTAG215
@@ -124,11 +146,17 @@ Sonoff Zigbee Dongle Plus
 
 **Recommended Start (~$150):**
 - Levoit Core 300S: $100
-- Aqara sensor 2-pack: $20
+- Aqara door/window sensor 2-pack: $20
 - 2x Kasa bulbs: $24
 - 1x Kasa plug: $12
 - NFC tags: $5
 - Total: ~$161
 
-**Full Phase 1 + 2 (~$220):**
-- Everything above + power strip + extra plugs
+**With Climate Control (~$210):**
+- Everything above
+- 2x Aqara temp sensors: $24
+- 2x Kasa plugs (for fans): $24
+- Total: ~$209
+
+**Full All Phases (~$270):**
+- Everything above + power strip + extra plugs + Zigbee dongle

@@ -25,11 +25,15 @@ Smart home setup for a 1-bedroom apartment focused on practical quality-of-life 
 - [ ] Aqara Door/Window Sensor (for window-open detection)
 - [ ] 2x Kasa Smart Bulbs (lamps)
 - [ ] 1x Kasa Smart Plug (music gear)
+- [ ] NFC tags for automations
 
-### Phase 2: Entertainment & Work
+### Phase 2: Climate Control
+- [ ] 2x Aqara Temperature/Humidity Sensors
+- [ ] 2x Kasa Smart Plugs (for room fans)
+
+### Phase 3: Entertainment & Work
 - [ ] Kasa Smart Power Strip (entertainment center)
 - [ ] Additional smart plugs as needed
-- [ ] NFC tags for automations
 
 ## Key Automations
 
@@ -54,6 +58,12 @@ Smart home setup for a 1-bedroom apartment focused on practical quality-of-life 
 - Guitar amp + pedal power on single smart plug
 - Auto-off timer (never left on overnight)
 - "Practice Mode" scene
+
+### Climate Control
+- **Above 72°F**: Room fans turn on automatically
+- **Below 65°F**: Fans turn off (hysteresis prevents rapid cycling)
+- **Window Open**: Fans pause (natural airflow priority)
+- **Night Mode**: Bedroom fan off for quiet sleep (if >70°F)
 
 ## NFC Tag Locations
 1. **Front Door**: Leaving/arriving home automation

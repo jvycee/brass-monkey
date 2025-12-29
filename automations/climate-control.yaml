@@ -1,0 +1,109 @@
+# Climate Control Automations
+# Temperature-based fan control for natural cooling
+
+# Automation: Bedroom fan on when hot
+# - id: bedroom_fan_on_hot
+#   alias: "Climate: Bedroom Fan On (Hot)"
+#   trigger:
+#     - platform: numeric_state
+#       entity_id: sensor.bedroom_temperature
+#       above: 72
+#   condition:
+#     - condition: state
+#       entity_id: switch.bedroom_fan
+#       state: "off"
+#   action:
+#     - service: switch.turn_on
+#       target:
+#         entity_id: switch.bedroom_fan
+#     - service: notify.mobile_app
+#       data:
+#         message: "Bedroom fan started - temp {{ states('sensor.bedroom_temperature') }}°F"
+
+# Automation: Bedroom fan off when cool
+# - id: bedroom_fan_off_cool
+#   alias: "Climate: Bedroom Fan Off (Cool)"
+#   trigger:
+#     - platform: numeric_state
+#       entity_id: sensor.bedroom_temperature
+#       below: 65
+#   condition:
+#     - condition: state
+#       entity_id: switch.bedroom_fan
+#       state: "on"
+#   action:
+#     - service: switch.turn_off
+#       target:
+#         entity_id: switch.bedroom_fan
+#     - service: notify.mobile_app
+#       data:
+#         message: "Bedroom fan stopped - temp {{ states('sensor.bedroom_temperature') }}°F"
+
+# Automation: Living room fan on when hot
+# - id: living_room_fan_on_hot
+#   alias: "Climate: Living Room Fan On (Hot)"
+#   trigger:
+#     - platform: numeric_state
+#       entity_id: sensor.living_room_temperature
+#       above: 72
+#   condition:
+#     - condition: state
+#       entity_id: switch.living_room_fan
+#       state: "off"
+#   action:
+#     - service: switch.turn_on
+#       target:
+#         entity_id: switch.living_room_fan
+
+# Automation: Living room fan off when cool
+# - id: living_room_fan_off_cool
+#   alias: "Climate: Living Room Fan Off (Cool)"
+#   trigger:
+#     - platform: numeric_state
+#       entity_id: sensor.living_room_temperature
+#       below: 65
+#   condition:
+#     - condition: state
+#       entity_id: switch.living_room_fan
+#       state: "on"
+#   action:
+#     - service: switch.turn_off
+#       target:
+#         entity_id: switch.living_room_fan
+
+# Automation: Override - Turn off fans when window open
+# - id: fans_off_window_open
+#   alias: "Climate: Fans Off When Window Open"
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.window_sensor
+#       to: "on"
+#   action:
+#     - service: switch.turn_off
+#       target:
+#         entity_id:
+#           - switch.bedroom_fan
+#           - switch.living_room_fan
+#     - service: notify.mobile_app
+#       data:
+#         message: "Natural airflow - fans paused"
+
+# Automation: Night mode - reduce fan speed if too loud
+# - id: night_mode_fan_quiet
+#   alias: "Climate: Night Mode Quiet Fans"
+#   trigger:
+#     - platform: time
+#       at: "22:00:00"
+#   condition:
+#     - condition: numeric_state
+#       entity_id: sensor.bedroom_temperature
+#       above: 70
+#   action:
+#     # Note: This assumes you have fans with speed control
+#     # Otherwise, you might just turn them off at night
+#     - service: switch.turn_off
+#       target:
+#         entity_id: switch.bedroom_fan
+#     - service: notify.mobile_app
+#       data:
+#         message: "Night mode - bedroom fan off for quiet sleep"

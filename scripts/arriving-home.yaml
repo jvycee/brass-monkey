@@ -1,0 +1,59 @@
+# Script: Arriving Home
+# Triggered by geofencing, door sensor, or NFC tag
+
+# arriving_home:
+#   alias: "Arriving Home"
+#   sequence:
+#     # Air purifier to LOW/AUTO mode
+#     - if:
+#         - condition: state
+#           entity_id: binary_sensor.window_sensor
+#           state: "off"  # Window closed
+#       then:
+#         - service: fan.turn_on
+#           target:
+#             entity_id: fan.air_purifier
+#         - service: fan.set_preset_mode
+#           target:
+#             entity_id: fan.air_purifier
+#           data:
+#             preset_mode: "auto"
+#       else:
+#         # Window open - leave purifier off
+#         - service: fan.turn_off
+#           target:
+#             entity_id: fan.air_purifier
+#
+#     # Lights on if it's dark outside
+#     - if:
+#         - condition: sun
+#           after: sunset
+#       then:
+#         - service: light.turn_on
+#           target:
+#             entity_id:
+#               - light.living_room_lamp
+#           data:
+#             brightness_pct: 80
+#             kelvin: 2700  # Warm white
+#
+#     # Optional: Turn on work setup if arriving during work hours
+#     - if:
+#         - condition: time
+#           after: "08:00:00"
+#           before: "18:00:00"
+#         - condition: state
+#           entity_id: binary_sensor.workday_sensor  # Optional helper
+#           state: "on"
+#       then:
+#         - service: switch.turn_on
+#           target:
+#             entity_id: switch.work_setup  # Mac Mini, etc.
+#
+#     # Welcome home notification
+#     - service: notify.mobile_app
+#       data:
+#         message: "Welcome home! Air purifier: {{ states('fan.air_purifier') }}, Temp: {{ states('sensor.living_room_temperature') }}°F"
+#         title: "Brass Monkey"
+#
+#   mode: single

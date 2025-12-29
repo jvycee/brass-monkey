@@ -38,17 +38,23 @@ See [actual-purchases.md](docs/actual-purchases.md) for full details.
 
 ## Key Automations
 
+### Presence Detection (Multi-Layered)
+- **Primary: Geofencing** - Phone location triggers away/home modes automatically
+- **Backup: Front Door Sensor** - Catches cases where geofencing fails
+- **Manual: NFC Tag** - Direct override when needed
+- **Smart State Tracking** - Prevents duplicate triggers from multiple methods
+
 ### Air Quality Intelligence
 - **Window Open**: Purifier stops automatically
 - **Window Closed**: Purifier resumes auto mode
-- **Away Mode**: Purifier runs on HIGH (aggressive cleaning)
-- **Home Mode**: Purifier returns to AUTO/LOW
+- **Away Mode**: Purifier runs on HIGH (aggressive cleaning while you're gone)
+- **Home Mode**: Purifier returns to AUTO/LOW (quiet operation)
 
 ### Daily Routines
 - **Morning**: Bedroom lamp gradual wake-up, work setup powers on
 - **Evening**: Living room lamp at sunset
-- **Leaving**: All lights off, entertainment off, purifier HIGH
-- **Arriving**: Purifier to LOW, lights on if dark
+- **Leaving Home**: All lights off, entertainment off, purifier HIGH, music gear off
+- **Arriving Home**: Purifier to LOW, lights on if dark, welcome notification
 
 ### Entertainment Center
 - Power strip controls: TV, Apple TV, PS5, Switch, Pi
@@ -66,26 +72,48 @@ See [actual-purchases.md](docs/actual-purchases.md) for full details.
 - **Window Open**: Fans pause (natural airflow priority)
 - **Night Mode**: Bedroom fan off for quiet sleep (if >70°F)
 
-## NFC Tag Locations
-1. **Front Door**: Leaving/arriving home automation
-2. **Bedside**: Sleep mode (all off, purifier low)
-3. **Desk**: Work mode toggle
-4. **Optional Car**: "Heading home" prep
+## Automation Triggers
+
+### Automatic (Preferred)
+- **Geofencing**: Phone location (100m radius)
+- **Door Sensor**: Front door activity patterns
+- **Time-based**: Morning/evening routines, schedules
+- **Temperature**: Fan control based on room temp
+- **Window State**: Air quality optimization
+
+### Manual Override
+1. **NFC Tag - Front Door**: Force leaving/arriving mode
+2. **NFC Tag - Bedside**: Sleep mode (all off, purifier low)
+3. **NFC Tag - Desk**: Work mode toggle
+4. **iPhone Shortcuts**: Siri voice commands
 
 ## Repository Structure
 
 ```
 brass-monkey/
-├── automations/          # Home Assistant automation configs
-├── scripts/              # Reusable scripts
-├── devices/              # Device-specific configs and docs
-├── docs/                 # Additional documentation
-└── README.md            # This file
+├── automations/
+│   ├── air-quality.yaml           # Purifier + window logic
+│   ├── climate-control.yaml       # Temperature-based fans
+│   ├── lighting.yaml              # Daily lighting routines
+│   └── presence-detection.yaml    # Geofencing + door sensor
+├── scripts/
+│   ├── leaving-home.yaml          # Away mode actions
+│   └── arriving-home.yaml         # Home mode actions
+├── devices/                       # Device configs (to be added)
+├── docs/
+│   ├── actual-purchases.md        # Complete order ($323)
+│   ├── setup-guide.md             # Device setup instructions
+│   ├── presence-detection-setup.md # Geofencing configuration
+│   └── shopping-list.md           # Original research
+└── README.md                      # This file
 ```
 
 ## Setup Instructions
 
-Coming soon...
+See detailed guides in `/docs`:
+- **[setup-guide.md](docs/setup-guide.md)** - Device pairing and initial setup
+- **[presence-detection-setup.md](docs/presence-detection-setup.md)** - Geofencing configuration
+- **[actual-purchases.md](docs/actual-purchases.md)** - What was ordered and why
 
 ## Notes
 

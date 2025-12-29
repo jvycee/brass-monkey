@@ -1,0 +1,174 @@
+# Presence Detection Automations
+# Multi-layered approach: Geofencing (primary) + Door Sensor (backup) + NFC (manual override)
+
+# ============================================================================
+# PRIMARY: Geofencing (Most Reliable)
+# ============================================================================
+
+# Automation: Leaving home via geofencing
+# - id: presence_leaving_home_geofence
+#   alias: "Presence: Leaving Home (Geofence)"
+#   description: "Primary method - triggers when phone leaves home zone"
+#   trigger:
+#     - platform: state
+#       entity_id: person.you
+#       from: "home"
+#       to: "not_home"
+#       for:
+#         minutes: 2  # Prevent false triggers (e.g., walking to mailbox)
+#   condition:
+#     # Only if we're not already in away mode
+#     - condition: state
+#       entity_id: input_boolean.away_mode
+#       state: "off"
+#   action:
+#     - service: script.leaving_home
+#     - service: input_boolean.turn_on
+#       target:
+#         entity_id: input_boolean.away_mode
+#     - service: notify.mobile_app
+#       data:
+#         message: "Away mode activated (geofence)"
+#         title: "Brass Monkey"
+
+# Automation: Arriving home via geofencing
+# - id: presence_arriving_home_geofence
+#   alias: "Presence: Arriving Home (Geofence)"
+#   description: "Primary method - triggers when phone enters home zone"
+#   trigger:
+#     - platform: state
+#       entity_id: person.you
+#       from: "not_home"
+#       to: "home"
+#   condition:
+#     # Only if we're in away mode
+#     - condition: state
+#       entity_id: input_boolean.away_mode
+#       state: "on"
+#   action:
+#     - service: script.arriving_home
+#     - service: input_boolean.turn_off
+#       target:
+#         entity_id: input_boolean.away_mode
+#     - service: notify.mobile_app
+#       data:
+#         message: "Welcome home! (geofence)"
+#         title: "Brass Monkey"
+
+# ============================================================================
+# BACKUP: Front Door Sensor (Catches Failed Geofence)
+# ============================================================================
+
+# Automation: Leaving via door sensor (backup)
+# - id: presence_leaving_home_door
+#   alias: "Presence: Leaving Home (Door Backup)"
+#   description: "Backup method - detects leaving via door activity"
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.front_door
+#       from: "off"
+#       to: "on"  # Door opens
+#   condition:
+#     # Only trigger if:
+#     # 1. Currently marked as home
+#     # 2. Geofence hasn't triggered yet (backup only)
+#     - condition: state
+#       entity_id: input_boolean.away_mode
+#       state: "off"
+#   action:
+#     # Wait for door to close and stay closed
+#     - wait_for_trigger:
+#         - platform: state
+#           entity_id: binary_sensor.front_door
+#           from: "on"
+#           to: "off"
+#       timeout:
+#         seconds: 120  # Door must close within 2 minutes
+#     # If door closed, wait additional time to confirm leaving
+#     - delay:
+#         seconds: 30  # Door stays closed for 30s = probably left
+#     # Double-check still in "home" state (geofence might have triggered)
+#     - condition: state
+#       entity_id: input_boolean.away_mode
+#       state: "off"
+#     # Trigger leaving mode
+#     - service: script.leaving_home
+#     - service: input_boolean.turn_on
+#       target:
+#         entity_id: input_boolean.away_mode
+#     - service: notify.mobile_app
+#       data:
+#         message: "Away mode activated (door sensor backup)"
+#         title: "Brass Monkey"
+
+# Automation: Arriving via door sensor (backup)
+# - id: presence_arriving_home_door
+#   alias: "Presence: Arriving Home (Door Backup)"
+#   description: "Backup method - detects arriving via door activity"
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.front_door
+#       from: "off"
+#       to: "on"
+#   condition:
+#     # Only if currently in away mode
+#     - condition: state
+#       entity_id: input_boolean.away_mode
+#       state: "on"
+#   action:
+#     # Wait for door to close
+#     - wait_for_trigger:
+#         - platform: state
+#           entity_id: binary_sensor.front_door
+#           from: "on"
+#           to: "off"
+#       timeout:
+#         seconds: 60
+#     # Short delay to confirm person stayed inside
+#     - delay:
+#         seconds: 10
+#     # Check still in away mode (geofence might have triggered)
+#     - condition: state
+#       entity_id: input_boolean.away_mode
+#       state: "on"
+#     # Trigger arriving mode
+#     - service: script.arriving_home
+#     - service: input_boolean.turn_off
+#       target:
+#         entity_id: input_boolean.away_mode
+#     - service: notify.mobile_app
+#       data:
+#         message: "Welcome home! (door sensor backup)"
+#         title: "Brass Monkey"
+
+# ============================================================================
+# HELPER: Away Mode Toggle
+# ============================================================================
+
+# Create this in Home Assistant UI:
+# Settings → Devices & Services → Helpers → Create Helper → Toggle
+# Name: "Away Mode"
+# Entity ID: input_boolean.away_mode
+#
+# This tracks whether you're home or away, preventing duplicate triggers
+# from multiple detection methods
+
+# ============================================================================
+# NOTES
+# ============================================================================
+
+# Why this works:
+# - Geofence triggers first (2 min delay prevents false positives)
+# - Door sensor only triggers if geofence failed
+# - input_boolean.away_mode prevents duplicate triggers
+# - NFC tags can manually call scripts regardless of state
+#
+# Tuning tips:
+# - Adjust geofence delay (2 min) if too slow/fast
+# - Adjust door closed delay (30s) based on your routine
+# - Monitor notifications to see which method triggers most
+#
+# False positive prevention:
+# - Taking out trash: Door opens/closes but you're back in 30s = no trigger
+# - Checking mail: Geofence 2-min delay catches quick returns
+# - Guest leaving: Door sensor works even if your phone stays home

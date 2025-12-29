@@ -1,5 +1,5 @@
 # Script: Leaving Home
-# Triggered by NFC tag or button at front door
+# Triggered by: Geofencing, door sensor backup, or NFC tag manual override
 
 # leaving_home:
 #   alias: "Leaving Home"

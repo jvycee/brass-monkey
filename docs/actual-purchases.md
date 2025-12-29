@@ -85,7 +85,27 @@
 
 ---
 
-## Total Investment: ~$322
+## Optional Add-On: Bathroom Motion Sensor
+
+### Motion Sensor (Optional)
+- **Aqara Motion Sensor P1** (~$18-20)
+  - Hands-free bathroom lighting
+  - 170° detection angle
+  - Zigbee connectivity
+  - 2+ year battery life
+  - Amazon: "Aqara Motion Sensor P1"
+
+**Use case:**
+- Night: Motion → dim warm light (20% brightness)
+- Day: Motion → full brightness
+- Auto-off when motion clears
+- No fumbling for switches at night
+
+**If added:** Total becomes ~$340-345
+
+---
+
+## Total Investment: ~$322 (or ~$340 with bathroom sensor)
 
 ## What This Gets You:
 

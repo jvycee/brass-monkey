@@ -32,7 +32,10 @@ Smart home setup for a 1-bedroom apartment focused on practical quality-of-life 
 - [x] **Kasa KL125P4** RGB Smart Bulbs 4-pack ($24)
 - [x] **NFC Tags NTAG215** 50-pack ($10)
 
-**Total: ~$323**
+### Optional (Add Later)
+- [ ] **Aqara Motion Sensor P1** (~$18) - Bathroom hands-free lighting
+
+**Total: ~$323** (or ~$340 with motion sensor)
 
 See [actual-purchases.md](docs/actual-purchases.md) for full details.
 
@@ -71,6 +74,12 @@ See [actual-purchases.md](docs/actual-purchases.md) for full details.
 - **Below 65°F**: Fans turn off (hysteresis prevents rapid cycling)
 - **Window Open**: Fans pause (natural airflow priority)
 - **Night Mode**: Bedroom fan off for quiet sleep (if >70°F)
+
+### Bathroom Lighting (Optional)
+- **Night (10 PM - 7 AM)**: Motion → 20% dim warm light
+- **Day (7 AM - 10 PM)**: Motion → 100% full brightness
+- **Auto-off**: 30s-60s after motion clears
+- **Manual override**: Temporarily disables motion automation
 
 ## Automation Triggers
 

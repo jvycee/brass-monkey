@@ -1,0 +1,168 @@
+# Bathroom Motion Lighting
+# Dim light at night, full brightness during day
+
+# Automation: Bathroom motion - Night mode (dim)
+# - id: bathroom_motion_night
+#   alias: "Bathroom: Motion Light (Night)"
+#   description: "Dim light when motion detected at night"
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.bathroom_motion
+#       to: "on"
+#   condition:
+#     # Only at night (between 10 PM and 7 AM)
+#     - condition: time
+#       after: "22:00:00"
+#       before: "07:00:00"
+#     # Only if light is currently off
+#     - condition: state
+#       entity_id: light.bathroom_light
+#       state: "off"
+#   action:
+#     - service: light.turn_on
+#       target:
+#         entity_id: light.bathroom_light
+#       data:
+#         brightness_pct: 20  # Very dim - just enough to see
+#         kelvin: 2200        # Warm amber - won't wake you up
+#         transition: 1       # Fade in over 1 second
+#     # Auto-off after motion clears
+#     - wait_for_trigger:
+#         - platform: state
+#           entity_id: binary_sensor.bathroom_motion
+#           to: "off"
+#           for:
+#             seconds: 30  # Wait 30s after motion stops
+#       timeout:
+#         minutes: 10    # Max 10 minutes (safety timeout)
+#     - service: light.turn_off
+#       target:
+#         entity_id: light.bathroom_light
+#       data:
+#         transition: 2  # Gentle fade out over 2 seconds
+
+# Automation: Bathroom motion - Day mode (full)
+# - id: bathroom_motion_day
+#   alias: "Bathroom: Motion Light (Day)"
+#   description: "Full brightness when motion detected during day"
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.bathroom_motion
+#       to: "on"
+#   condition:
+#     # Only during day (7 AM to 10 PM)
+#     - condition: time
+#       after: "07:00:00"
+#       before: "22:00:00"
+#     # Only if light is currently off
+#     - condition: state
+#       entity_id: light.bathroom_light
+#       state: "off"
+#   action:
+#     - service: light.turn_on
+#       target:
+#         entity_id: light.bathroom_light
+#       data:
+#         brightness_pct: 100  # Full brightness during day
+#         kelvin: 4000         # Neutral white
+#         transition: 0.5
+#     # Auto-off after motion clears
+#     - wait_for_trigger:
+#         - platform: state
+#           entity_id: binary_sensor.bathroom_motion
+#           to: "off"
+#           for:
+#             seconds: 60  # Wait 1 minute after motion stops (shower time)
+#       timeout:
+#         minutes: 15    # Max 15 minutes
+#     - service: light.turn_off
+#       target:
+#         entity_id: light.bathroom_light
+#       data:
+#         transition: 1
+
+# Automation: Manual override - turn off automation temporarily
+# - id: bathroom_manual_override
+#   alias: "Bathroom: Manual Override"
+#   description: "If light manually turned on/off, disable motion for 30 min"
+#   trigger:
+#     - platform: state
+#       entity_id: light.bathroom_light
+#   condition:
+#     # Only if changed manually (not by automation)
+#     - condition: template
+#       value_template: "{{ trigger.to_state.context.user_id != none }}"
+#   action:
+#     # Disable motion automations temporarily
+#     - service: automation.turn_off
+#       target:
+#         entity_id:
+#           - automation.bathroom_motion_night
+#           - automation.bathroom_motion_day
+#     # Wait 30 minutes
+#     - delay:
+#         minutes: 30
+#     # Re-enable automations
+#     - service: automation.turn_on
+#       target:
+#         entity_id:
+#           - automation.bathroom_motion_night
+#           - automation.bathroom_motion_day
+
+# ============================================================================
+# ALTERNATIVE: Simple Single Automation (If you don't have RGB bulb)
+# ============================================================================
+
+# If bathroom light is just a smart plug with regular bulb:
+# - id: bathroom_motion_simple
+#   alias: "Bathroom: Motion Light (Simple)"
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.bathroom_motion
+#       to: "on"
+#   condition:
+#     - condition: state
+#       entity_id: switch.bathroom_light
+#       state: "off"
+#   action:
+#     - service: switch.turn_on
+#       target:
+#         entity_id: switch.bathroom_light
+#     - wait_for_trigger:
+#         - platform: state
+#           entity_id: binary_sensor.bathroom_motion
+#           to: "off"
+#           for:
+#             seconds: 60
+#       timeout:
+#         minutes: 15
+#     - service: switch.turn_off
+#       target:
+#         entity_id: switch.bathroom_light
+
+# ============================================================================
+# TIPS & TUNING
+# ============================================================================
+
+# Motion sensor placement:
+# - Mount in corner opposite door (sees whole room)
+# - Height: 6-7 feet for best coverage
+# - Angle slightly downward
+# - Avoid direct line of sight to toilet (privacy)
+#
+# Timing adjustments:
+# - Night delay (30s): Increase if light turns off while brushing teeth
+# - Day delay (60s): Increase for longer showers
+# - Timeout (10-15 min): Safety in case sensor fails
+#
+# Brightness levels:
+# - Night (20%): Adjust if too bright/dim for your eyes
+# - Kelvin (2200): Lower = more amber/orange = less wake-up
+#
+# False positives:
+# - If triggering from hallway: narrow sensor angle or relocate
+# - If not triggering: check battery, mount height, angle
+#
+# Manual override:
+# - 30 min timeout allows manual control without automation fighting you
+# - Useful when cleaning, bathing kids, etc.

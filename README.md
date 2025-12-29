@@ -18,22 +18,23 @@ Smart home setup for a 1-bedroom apartment focused on practical quality-of-life 
 - Ambient lighting for daily routines
 - Low maintenance, high impact
 
-## Planned Devices
+## Devices (Ordered Dec 2025)
 
-### Phase 1: Air Quality & Basics
-- [ ] Levoit Core 300S/400S Air Purifier
-- [ ] Aqara Door/Window Sensor (for window-open detection)
-- [ ] 2x Kasa Smart Bulbs (lamps)
-- [ ] 1x Kasa Smart Plug (music gear)
-- [ ] NFC tags for automations
+### Air Quality & Monitoring
+- [x] **Levoit Vital 100S** Air Purifier ($114)
+- [x] **Aqara Door/Window Sensor** x2 ($29)
+- [x] **Aqara Temp/Humidity Sensor** 3-pack ($44)
 
-### Phase 2: Climate Control
-- [ ] 2x Aqara Temperature/Humidity Sensors
-- [ ] 2x Kasa Smart Plugs (for room fans)
+### Control & Automation
+- [x] **Sonoff Zigbee 3.0 USB Dongle Plus-E** ($25)
+- [x] **Kasa EP25P4** Smart Plugs 4-pack ($37)
+- [x] **Kasa HS300** Power Strip 6-outlet ($40)
+- [x] **Kasa KL125P4** RGB Smart Bulbs 4-pack ($24)
+- [x] **NFC Tags NTAG215** 50-pack ($10)
 
-### Phase 3: Entertainment & Work
-- [ ] Kasa Smart Power Strip (entertainment center)
-- [ ] Additional smart plugs as needed
+**Total: ~$323**
+
+See [actual-purchases.md](docs/actual-purchases.md) for full details.
 
 ## Key Automations
 

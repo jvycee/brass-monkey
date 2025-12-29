@@ -1,0 +1,63 @@
+# Lighting Automations
+# Daily routines and ambient lighting
+
+# Automation: Morning wake-up
+# - id: morning_wakeup_light
+#   alias: "Lights: Morning Wake-up"
+#   trigger:
+#     - platform: time
+#       at: "07:00:00"
+#   condition:
+#     - condition: state
+#       entity_id: person.you
+#       state: "home"
+#   action:
+#     - service: light.turn_on
+#       target:
+#         entity_id: light.bedroom_lamp
+#       data:
+#         brightness_pct: 1
+#     - service: light.turn_on
+#       target:
+#         entity_id: light.bedroom_lamp
+#       data:
+#         brightness_pct: 100
+#         transition: 600  # 10 minutes
+
+# Automation: Evening ambient
+# - id: evening_ambient_lights
+#   alias: "Lights: Evening Ambient"
+#   trigger:
+#     - platform: sun
+#       event: sunset
+#       offset: "-00:30:00"
+#   condition:
+#     - condition: state
+#       entity_id: person.you
+#       state: "home"
+#   action:
+#     - service: light.turn_on
+#       target:
+#         entity_id: light.living_room_lamp
+#       data:
+#         brightness_pct: 80
+#         kelvin: 2700
+
+# Automation: Bedtime
+# - id: bedtime_lights_dim
+#   alias: "Lights: Bedtime Dim"
+#   trigger:
+#     - platform: time
+#       at: "22:00:00"
+#   condition:
+#     - condition: state
+#       entity_id: person.you
+#       state: "home"
+#   action:
+#     - service: light.turn_on
+#       target:
+#         entity_id: light.living_room_lamp
+#       data:
+#         brightness_pct: 30
+#         kelvin: 2200
+#         transition: 60

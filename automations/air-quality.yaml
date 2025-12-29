@@ -1,0 +1,70 @@
+# Air Quality Automations
+# Manages air purifier based on window state and presence
+
+# Automation: Stop purifier when window opens
+# - id: window_open_stop_purifier
+#   alias: "Air: Window Open - Stop Purifier"
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.window_sensor
+#       to: "on"
+#   action:
+#     - service: fan.turn_off
+#       target:
+#         entity_id: fan.air_purifier
+#     - service: notify.mobile_app
+#       data:
+#         message: "Natural airflow active - purifier paused"
+
+# Automation: Resume purifier when window closes
+# - id: window_closed_resume_purifier
+#   alias: "Air: Window Closed - Resume Purifier"
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.window_sensor
+#       to: "off"
+#       for:
+#         minutes: 5
+#   action:
+#     - service: fan.turn_on
+#       target:
+#         entity_id: fan.air_purifier
+#     - service: fan.set_preset_mode
+#       target:
+#         entity_id: fan.air_purifier
+#       data:
+#         preset_mode: "auto"
+
+# Automation: High mode when away
+# - id: away_purifier_high
+#   alias: "Air: Away Mode - High Speed"
+#   trigger:
+#     - platform: state
+#       entity_id: person.you
+#       to: "not_home"
+#       for:
+#         minutes: 15
+#   condition:
+#     - condition: state
+#       entity_id: binary_sensor.window_sensor
+#       state: "off"
+#   action:
+#     - service: fan.set_preset_mode
+#       target:
+#         entity_id: fan.air_purifier
+#       data:
+#         preset_mode: "turbo"
+
+# Automation: Low mode when home
+# - id: home_purifier_low
+#   alias: "Air: Home Mode - Quiet"
+#   trigger:
+#     - platform: state
+#       entity_id: person.you
+#       to: "home"
+#   action:
+#     - service: fan.set_preset_mode
+#       target:
+#         entity_id: fan.air_purifier
+#       data:
+#         preset_mode: "auto"

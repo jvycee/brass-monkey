@@ -1,0 +1,45 @@
+# Script: Leaving Home
+# Triggered by NFC tag or button at front door
+
+# leaving_home:
+#   alias: "Leaving Home"
+#   sequence:
+#     # Turn off all lights
+#     - service: light.turn_off
+#       target:
+#         entity_id: all
+#
+#     # Entertainment center off
+#     - service: switch.turn_off
+#       target:
+#         entity_id:
+#           - switch.entertainment_center
+#
+#     # Music gear off
+#     - service: switch.turn_off
+#       target:
+#         entity_id: switch.music_gear
+#
+#     # Air purifier to HIGH (if window closed)
+#     - if:
+#         - condition: state
+#           entity_id: binary_sensor.window_sensor
+#           state: "off"
+#       then:
+#         - service: fan.set_preset_mode
+#           target:
+#             entity_id: fan.air_purifier
+#           data:
+#             preset_mode: "turbo"
+#       else:
+#         - service: fan.turn_off
+#           target:
+#             entity_id: fan.air_purifier
+#
+#     # Notification
+#     - service: notify.mobile_app
+#       data:
+#         message: "Leaving home mode activated"
+#         title: "Brass Monkey"
+#
+#   mode: single

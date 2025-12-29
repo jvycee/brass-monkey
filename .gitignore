@@ -1,0 +1,67 @@
+# Home Assistant Secrets
+secrets.yaml
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.sqlite
+
+# Home Assistant specific
+home-assistant.log
+home-assistant_v2.db
+OZW_Log.txt
+ip_bans.yaml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+
+# Dependencies
+deps/
+tts/
+
+# Custom components cache
+custom_components/**/*.pyc
+
+# HACS
+custom_components/hacs/
+
+# Node modules (if using)
+node_modules/
+
+# Certificates and keys
+*.pem
+*.key
+*.crt
+*.p12
+
+# Personal info
+known_devices.yaml
+*.conf
+
+# ESPHome secrets
+esphome/secrets.yaml

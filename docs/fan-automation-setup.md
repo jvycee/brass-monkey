@@ -6,8 +6,15 @@ Automatically control your bedroom fan using the temperature sensor in your Home
 
 ## Hardware
 
-- **HomePod mini** (Bedroom) - Temperature & humidity sensor
-- **Kasa EP25 Plug** (10.0.0.200 / bc:07:1d:2c:0d:29) - Controls fan
+- **HomePod mini** (Bedroom)
+  - Model: MY5G2LL/A (Space Gray)
+  - Serial: HG5JK5g9PQ1H
+  - Temperature & humidity sensor
+  - IP: 10.0.0.118 ✓ Confirmed
+  - MAC: 74:6d:fa:f3:d6:5c
+- **Kasa EP25 Plug** (10.0.0.200 / bc:07:1d:2c:0d:29)
+  - Named "Fan" in Kasa app
+  - Controls bedroom fan
 - **Fan** - Connected to the Kasa plug
 
 ## Setup Steps

@@ -1,0 +1,26 @@
+# Apple HomeKit Devices
+# Updated: 2026-01-08
+
+homepods:
+  - name: "HomePod mini"
+    model: "MY5G2LL/A"  # Space Gray HomePod mini (US)
+    serial: "HG5JK5g9PQ1H"
+    location: "Bedroom"
+    ip: "10.0.0.118"  # Confirmed via AirTunes service detection
+    mac: "74:6d:fa:f3:d6:5c"
+    features:
+      - temperature_sensor
+      - humidity_sensor
+      - airplay
+      - siri
+      - homekit_hub
+    purpose: "Temperature sensor for automated fan control"
+    notes: |
+      - Requires HomeKit Controller integration in Home Assistant
+      - Temperature/humidity sensors accessible after pairing
+      - Used for bedroom climate automation
+
+# Expected entities in Home Assistant after pairing:
+# - sensor.homepod_mini_temperature (or similar)
+# - sensor.homepod_mini_humidity
+# - media_player.homepod_mini (AirPlay)

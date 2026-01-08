@@ -37,13 +37,18 @@ Identified on network - require Home Assistant integration for control.
 - [ ] Zigbee Home Automation (ZHA) for Sonoff dongle
 
 ### Apple HomeKit Devices
-| Device | Location | Detected IPs | Status |
-|--------|----------|--------------|--------|
-| HomePod mini | Bedroom | 10.0.0.118, 10.0.0.98, or 10.0.0.54 | ✓ On network (needs pairing) |
+| Device | Model | IP | MAC | Status |
+|--------|-------|-----|-----|--------|
+| HomePod mini | MY5G2LL/A | 10.0.0.118 | 74:6d:fa:f3:d6:5c | ✓ Identified |
 
 **Features:**
 - Temperature sensor (for fan automation)
 - Humidity sensor
+- AirPlay 2
+- Siri
+- HomeKit Hub
+
+**Serial:** HG5JK5g9PQ1H (Space Gray model)
 
 ### Zigbee Devices (Not yet paired)
 - [ ] Aqara Door/Window Sensor x2

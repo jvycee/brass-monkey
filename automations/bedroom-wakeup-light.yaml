@@ -1,0 +1,144 @@
+# Gradual Wake-Up Light - Bedroom
+# Slowly brighten bedside lamp from 7:00-7:15 AM on weekdays
+# Uses: Bedside lamp - 1 (KL125 at 10.0.0.224)
+
+- alias: "Gradual Wake-Up Light - Bedroom"
+  description: "Gentle wake-up with gradually brightening light on weekday mornings"
+
+  trigger:
+    - platform: time
+      at: "07:00:00"  # Start at 7:00 AM MST
+
+  condition:
+    # Only on weekdays (Monday-Friday)
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+
+  action:
+    # Phase 1: Deep red sunrise (0-3 minutes)
+    - service: light.turn_on
+      target:
+        entity_id: light.bedside_lamp_1  # Update if entity name is different
+      data:
+        brightness: 1  # Start very dim
+        rgb_color: [255, 0, 0]  # Deep red (sunrise beginning)
+        transition: 1
+
+    # Gradually brighten and shift colors like real sunrise
+    - repeat:
+        count: 30  # 30 steps over 15 minutes
+        sequence:
+          - delay:
+              seconds: 30  # Every 30 seconds
+
+          - choose:
+              # Phase 1: Deep red (steps 1-6) - 0 to 3 minutes
+              - conditions:
+                  - condition: template
+                    value_template: "{{ repeat.index <= 6 }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id: light.bedside_lamp_1
+                    data:
+                      brightness_pct: "{{ (repeat.index * 2) | int }}"  # 2% to 12%
+                      rgb_color: [255, "{{ (repeat.index * 10) | int }}", 0]  # Red to red-orange
+                      transition: 30
+
+              # Phase 2: Orange (steps 7-12) - 3 to 6 minutes
+              - conditions:
+                  - condition: template
+                    value_template: "{{ repeat.index > 6 and repeat.index <= 12 }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id: light.bedside_lamp_1
+                    data:
+                      brightness_pct: "{{ ((repeat.index - 6) * 5 + 12) | int }}"  # 17% to 42%
+                      rgb_color: [255, "{{ ((repeat.index - 6) * 30 + 60) | int }}", 0]  # Orange
+                      transition: 30
+
+              # Phase 3: Yellow-orange (steps 13-20) - 6 to 10 minutes
+              - conditions:
+                  - condition: template
+                    value_template: "{{ repeat.index > 12 and repeat.index <= 20 }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id: light.bedside_lamp_1
+                    data:
+                      brightness_pct: "{{ ((repeat.index - 12) * 5 + 42) | int }}"  # 47% to 82%
+                      rgb_color: [255, 255, "{{ ((repeat.index - 12) * 15) | int }}"]  # Yellow
+                      transition: 30
+
+              # Phase 4: Bright daylight white (steps 21-30) - 10 to 15 minutes
+              - conditions:
+                  - condition: template
+                    value_template: "{{ repeat.index > 20 }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id: light.bedside_lamp_1
+                    data:
+                      brightness_pct: "{{ ((repeat.index - 20) * 2 + 82) | int }}"  # 84% to 100%
+                      rgb_color: [255, 255, "{{ ((repeat.index - 20) * 10 + 120) | int }}"]  # Warm white
+                      transition: 30
+
+# Optional: Turn off light after you're awake
+- alias: "Auto Turn Off Wake-Up Light"
+  description: "Turn off bedroom light after wake-up period"
+
+  trigger:
+    - platform: time
+      at: "08:00:00"  # Turn off at 8 AM (or adjust to your schedule)
+
+  condition:
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+
+    # Only turn off if light is on (from wake-up automation)
+    - condition: state
+      entity_id: light.bedside_lamp_1
+      state: 'on'
+
+  action:
+    - service: light.turn_off
+      target:
+        entity_id: light.bedside_lamp_1
+      data:
+        transition: 5  # Gentle 5-second fade out
+
+# Optional: Manual override - disable wake-up if you want to sleep in
+- alias: "Disable Wake-Up Light Today"
+  description: "Turn off input boolean to skip wake-up light this morning"
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: input_boolean.skip_wakeup_today  # You'll need to create this helper
+      to: 'on'
+  action:
+    - service: automation.turn_off
+      target:
+        entity_id: automation.gradual_wake_up_light_bedroom
+
+    # Re-enable at midnight for tomorrow
+    - delay:
+        hours: 17  # Re-enable after 17 hours (will be midnight)
+
+    - service: automation.turn_on
+      target:
+        entity_id: automation.gradual_wake_up_light_bedroom
+
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.skip_wakeup_today

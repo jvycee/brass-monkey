@@ -1,0 +1,70 @@
+# TP-Link Kasa Devices
+# Updated: 2026-01-08
+
+bulbs:
+  - alias: "Paper lamp - low"
+    ip: 10.0.0.103
+    model: KL125
+    mac: "8c:86:dd:48:f9:f9"
+    location: "Living room"
+    features:
+      - dimmable
+      - color_temp
+
+  - alias: "Paper lamp - upper"
+    ip: 10.0.0.177
+    model: KL125
+    mac: "8c:86:dd:48:f6:38"
+    location: "Living room"
+    features:
+      - dimmable
+      - color_temp
+
+  - alias: "Bedside lamp - 1"
+    ip: 10.0.0.224
+    model: KL125
+    mac: "e0:d3:62:4d:cf:f7"
+    location: "Bedroom"
+    features:
+      - dimmable
+      - color_temp
+
+  - alias: "Egg lamp"
+    ip: 10.0.0.244
+    model: KL125
+    mac: "e0:d3:62:4d:ce:5e"
+    location: "TBD"
+    features:
+      - dimmable
+      - color_temp
+      - rgb
+
+plugs:
+  - alias: "String lights"
+    ip: 10.0.0.165
+    model: EP25
+    mac: "bc:07:1d:2c:4d:f2"
+    location: "TBD"
+    features:
+      - power_monitoring
+      - schedule
+    notes: "Newer EP25 requires Home Assistant integration (uses KLAP protocol)"
+
+  - alias: "(Rename me)"
+    ip: 10.0.0.201
+    model: EP25
+    mac: "bc:07:1d:2b:f1:6f"
+    location: "TBD"
+    features:
+      - power_monitoring
+      - schedule
+    notes: "Newer EP25 requires Home Assistant integration (uses KLAP protocol)"
+
+  # Unplugged/spare plugs
+  - alias: "Spare plug 1"
+    model: EP25
+    status: "Not configured - available for setup"
+
+  - alias: "Spare plug 2"
+    model: EP25
+    status: "Not configured - available for setup"

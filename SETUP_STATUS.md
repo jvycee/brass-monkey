@@ -30,11 +30,16 @@ Identified on network - require Home Assistant integration for control.
 |--------|------|--------|
 | Sonoff Zigbee 3.0 USB Dongle Plus-E | /dev/ttyUSB0 | ✓ Detected |
 
-## 📋 Ready to Configure
+## 📋 Configured in Home Assistant
 
 ### Home Assistant Integrations
-- [ ] TP-Link Kasa Smart (for all 6 devices)
-- [ ] Zigbee Home Automation (ZHA) for Sonoff dongle
+- [x] **TP-Link Kasa Smart** - All 7 devices configured! ✓
+  - 4 bulbs working
+  - 3 plugs working (including Fan plug at 10.0.0.200)
+- [x] **Zigbee Home Automation (ZHA)** - Sonoff dongle configured! ✓
+  - Radio type: EZSP
+  - Device: /dev/ttyUSB0
+  - Network created and ready for device pairing
 
 ### Apple HomeKit Devices
 | Device | Model | IP | MAC | Status |
@@ -50,9 +55,13 @@ Identified on network - require Home Assistant integration for control.
 
 **Serial:** HG5JK5g9PQ1H (Space Gray model)
 
-### Zigbee Devices (Not yet paired)
-- [ ] Aqara Door/Window Sensor x2
-- [ ] Aqara Temperature/Humidity Sensor x3
+### Zigbee Devices (Waiting to arrive)
+- [ ] Aqara Door/Window Sensor x2 - **Not ordered yet**
+- [ ] Aqara Temperature/Humidity Sensor x3 - **Not ordered yet**
+  - One will be used for bedroom fan automation
+
+### Physical Hardware (In Transit)
+- [ ] Non-digital fan - **Arrives tomorrow** ✓ Smart choice for plug control!
 
 ## 📝 Scripts Created
 
@@ -88,28 +97,39 @@ All in `/home/jvycee/brass-monkey/automations/`:
 
 ## 🎯 Next Steps
 
-1. **Add Kasa to Home Assistant**
-   - Follow `docs/kasa-setup-guide.md`
-   - Should auto-discover all 6 devices
+### ✅ Completed Today (2026-01-08)
+1. ✓ **Discovered all devices** - 4 bulbs, 3 plugs, HomePod, Zigbee dongle
+2. ✓ **Added Kasa to Home Assistant** - All 7 devices working
+3. ✓ **Configured Zigbee (ZHA)** - Sonoff dongle ready for sensors
+4. ✓ **Created fan automation** - Ready to install when sensors arrive
 
-2. **Configure Zigbee**
-   - Run: `./scripts/setup_zigbee_zha.sh`
-   - Add dongle to docker-compose.yml
-   - Set up ZHA integration
+### 📦 Waiting On
+1. **Fan arrives tomorrow** - Non-digital model for easy plug control
+2. **Order Aqara sensors** - Temperature/humidity for fan automation
+3. **Order Aqara door/window sensors** (optional) - For presence detection
 
-3. **Pair Aqara Sensors**
-   - Door/window sensors for presence detection
-   - Temperature sensors for climate control
+### 🔜 When Sensors Arrive
+1. **Pair Aqara temperature sensor to ZHA**
+   - In HA: ZHA integration → Add Device
+   - Hold sensor button for 5 seconds
+   - Sensor will appear in HA
 
-4. **Test Automations**
-   - Migrate automations from brass-monkey to HA
-   - Test presence detection with door sensor
-   - Configure air quality logic
+2. **Install fan automation**
+   - Copy `automations/fan-control-homepod.yaml` to HA
+   - Update to use Aqara sensor instead of HomePod
+   - Entity: `sensor.bedroom_temperature` (or similar)
 
-5. **Optional Enhancements**
-   - Set up static IPs in router
-   - Configure NFC tags
-   - Add motion sensor for bathroom lighting
+3. **Test with real fan**
+   - Plug fan into Kasa plug (10.0.0.200)
+   - Verify automation turns fan on/off based on temp
+   - Adjust temperature thresholds if needed
+
+### 🔧 Optional Later
+- Set up static IPs in router for all devices
+- Configure NFC tags for manual overrides
+- Add bathroom motion sensor
+- Set up door sensors for presence detection
+- Migrate other automations from brass-monkey repo
 
 ## 🛠 System Info
 

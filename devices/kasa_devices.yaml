@@ -60,11 +60,18 @@ plugs:
       - schedule
     notes: "Newer EP25 requires Home Assistant integration (uses KLAP protocol)"
 
-  # Unplugged/spare plugs
-  - alias: "Spare plug 1"
+  - alias: "Fan"
+    ip: 10.0.0.200
     model: EP25
-    status: "Not configured - available for setup"
+    mac: "bc:07:1d:2c:0d:29"
+    location: "Bedroom"
+    purpose: "Controls bedroom fan based on HomePod mini temperature sensor"
+    features:
+      - power_monitoring
+      - schedule
+    notes: "Configured in Kasa app - uses KLAP protocol (requires HA integration)"
 
-  - alias: "Spare plug 2"
+  # Unplugged/spare plug
+  - alias: "Spare plug"
     model: EP25
     status: "Not configured - available for setup"

@@ -1,0 +1,113 @@
+# Fan Control Based on HomePod mini Temperature Sensor
+# HomePod mini located in Bedroom
+# Controls Kasa EP25 plug at 10.0.0.200
+
+# Turn fan ON when temperature rises above threshold
+- alias: "Fan On - High Temperature"
+  description: "Turn on bedroom fan when HomePod reports high temperature"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.bedroom_temperature  # HomePod mini sensor (adjust entity name)
+      above: 72  # Temperature in °F (adjust to your preference)
+      for:
+        minutes: 2  # Wait 2 minutes before triggering (avoid rapid cycling)
+  condition:
+    # Optional: Only run if window is closed (if you have window sensor)
+    # - condition: state
+    #   entity_id: binary_sensor.bedroom_window
+    #   state: 'off'
+
+    # Only run during certain hours (optional)
+    - condition: time
+      after: '07:00:00'
+      before: '23:00:00'
+  action:
+    - service: switch.turn_on
+      target:
+        entity_id: switch.fan_control  # Your Kasa plug at 10.0.0.200
+    - service: notify.mobile_app_iphone  # Optional notification (requires HA mobile app)
+      data:
+        message: "🌡️ Fan turned on - bedroom is {{ states('sensor.bedroom_temperature') }}°F"
+        title: "Climate Control"
+
+# Turn fan OFF when temperature drops
+- alias: "Fan Off - Normal Temperature"
+  description: "Turn off bedroom fan when temperature normalizes"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.bedroom_temperature
+      below: 70  # Turn off at lower temp (hysteresis prevents rapid on/off cycling)
+      for:
+        minutes: 5  # Wait longer before turning off
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.fan_control
+    - service: notify.mobile_app_iphone  # Optional notification
+      data:
+        message: "✅ Fan turned off - bedroom is {{ states('sensor.bedroom_temperature') }}°F"
+        title: "Climate Control"
+
+# Night mode - Turn off fan for quiet sleep (even if warm)
+- alias: "Fan Off - Night Mode"
+  description: "Turn off fan at night for quiet sleep (unless extremely hot)"
+  trigger:
+    - platform: time
+      at: '23:00:00'
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.bedroom_temperature
+      below: 78  # Only turn off if temp is below this (safety)
+  action:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.fan_control
+    - service: notify.mobile_app_iphone
+      data:
+        message: "😴 Fan off for night mode"
+        title: "Good Night"
+
+# Morning resume - Resume automatic fan control
+- alias: "Fan Auto Resume - Morning"
+  description: "Resume automatic fan control in the morning"
+  trigger:
+    - platform: time
+      at: '07:00:00'
+  action:
+    # Check current temperature and turn on if needed
+    - choose:
+        - conditions:
+            - condition: numeric_state
+              entity_id: sensor.bedroom_temperature
+              above: 72
+          sequence:
+            - service: switch.turn_on
+              target:
+                entity_id: switch.fan_control
+            - service: notify.mobile_app_iphone
+              data:
+                message: "🌅 Good morning! Fan on - room is {{ states('sensor.bedroom_temperature') }}°F"
+      default:
+        - service: notify.mobile_app_iphone
+          data:
+            message: "🌅 Good morning! Temperature is comfortable at {{ states('sensor.bedroom_temperature') }}°F"
+
+# Optional: Window open detection - turn off fan when window is open (save energy)
+# Uncomment when you have Aqara window sensor paired
+# - alias: "Fan Off - Window Open"
+#   description: "Turn off fan when window is open (natural airflow)"
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.bedroom_window
+#       to: 'on'  # Window opened
+#   condition:
+#     - condition: state
+#       entity_id: switch.fan_control
+#       state: 'on'
+#   action:
+#     - service: switch.turn_off
+#       target:
+#         entity_id: switch.fan_control
+#     - service: notify.mobile_app_iphone
+#       data:
+#         message: "🪟 Fan off - window is open for natural airflow"

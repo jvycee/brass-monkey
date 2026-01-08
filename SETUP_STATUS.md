@@ -14,13 +14,14 @@ All verified working - successfully blinked each one!
 | Bedside lamp - 1 | 10.0.0.224 | e0:d3:62:4d:cf:f7 | ✓ Working |
 | Egg lamp | 10.0.0.244 | e0:d3:62:4d:ce:5e | ✓ Working |
 
-### TP-Link Kasa Smart Plugs (2 active)
+### TP-Link Kasa Smart Plugs (3 active)
 Identified on network - require Home Assistant integration for control.
 
 | Device | IP | MAC | Status |
 |--------|-----|-----|--------|
 | String lights | 10.0.0.165 | bc:07:1d:2c:4d:f2 | ✓ On network |
 | (Rename me) | 10.0.0.201 | bc:07:1d:2b:f1:6f | ✓ On network |
+| Fan | 10.0.0.200 | bc:07:1d:2c:0d:29 | ✓ Configured (Bedroom) |
 
 **Note:** EP25 plugs use newer KLAP protocol - use Home Assistant integration instead of CLI.
 
@@ -34,6 +35,15 @@ Identified on network - require Home Assistant integration for control.
 ### Home Assistant Integrations
 - [ ] TP-Link Kasa Smart (for all 6 devices)
 - [ ] Zigbee Home Automation (ZHA) for Sonoff dongle
+
+### Apple HomeKit Devices
+| Device | Location | Detected IPs | Status |
+|--------|----------|--------------|--------|
+| HomePod mini | Bedroom | 10.0.0.118, 10.0.0.98, or 10.0.0.54 | ✓ On network (needs pairing) |
+
+**Features:**
+- Temperature sensor (for fan automation)
+- Humidity sensor
 
 ### Zigbee Devices (Not yet paired)
 - [ ] Aqara Door/Window Sensor x2
@@ -49,6 +59,19 @@ All in `/home/jvycee/brass-monkey/scripts/`:
 | `kasa_control.py` | Control devices via CLI (on/off/brightness/blink) |
 | `device_status.py` | Get status summary of all devices |
 | `setup_zigbee_zha.sh` | Guide for Zigbee dongle setup in HA |
+
+## 🤖 Automations Created
+
+All in `/home/jvycee/brass-monkey/automations/`:
+
+| Automation | Purpose |
+|------------|---------|
+| `fan-control-homepod.yaml` | Temperature-based fan control using HomePod mini sensor |
+| `air-quality.yaml` | Purifier control based on window state |
+| `climate-control.yaml` | Temperature-based climate management |
+| `lighting.yaml` | Daily lighting routines |
+| `presence-detection.yaml` | Geofencing + door sensor presence |
+| `bathroom-lighting.yaml` | Motion-activated bathroom lights |
 
 ## 📄 Documentation Created
 

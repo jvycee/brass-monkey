@@ -58,7 +58,7 @@
 
 1. **In Home Assistant:** Settings → Add-ons → File Editor (install if needed)
 2. **Navigate to:** `/config/automations.yaml`
-3. **Copy the automation** from `/home/jvycee/brass-monkey/automations/fan-control-homepod.yaml`
+3. **Copy the automation** from `/home/jvycee/projects/brass-monkey/automations/fan-control-homepod.yaml`
 4. **Update entity names** to match your sensor:
    - Change `sensor.bedroom_temperature` to your actual entity name
    - Change `switch.fan_control` to match your Fan plug entity

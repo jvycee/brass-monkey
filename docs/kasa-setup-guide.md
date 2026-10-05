@@ -101,7 +101,7 @@ Your brass-monkey automations reference these devices:
 ### Command Line Control
 Bulbs (KL125) work with command line tools:
 ```bash
-cd /home/jvycee/brass-monkey/scripts
+cd /home/jvycee/projects/brass-monkey/scripts
 ./kasa_control.py --list
 ./kasa_control.py --blink all
 ```

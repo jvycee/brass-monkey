@@ -65,7 +65,7 @@ Identified on network - require Home Assistant integration for control.
 
 ## 📝 Scripts Created
 
-All in `/home/jvycee/brass-monkey/scripts/`:
+All in `/home/jvycee/projects/brass-monkey/scripts/`:
 
 | Script | Purpose |
 |--------|---------|
@@ -76,7 +76,7 @@ All in `/home/jvycee/brass-monkey/scripts/`:
 
 ## 🤖 Automations Created
 
-All in `/home/jvycee/brass-monkey/automations/`:
+All in `/home/jvycee/projects/brass-monkey/automations/`:
 
 | Automation | Purpose |
 |------------|---------|
